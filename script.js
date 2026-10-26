@@ -43,34 +43,34 @@ function afficherProduits() {
 afficherProduits();
 // 2. Gérer l’ajout depuis le formulaire.
 const formulaire = document.querySelector("#form-produit");
-const champNom = document.querySelector("#nom");
-const champPrix = document.querySelector("#prix");
-const message = document.querySelector("#message");
 
-formulaire.addEventListener("submit", function (event) {
+function ajouterProduit(event) {
   event.preventDefault();
 
-  const nom = champNom.value.trim();
-  const prix = Number(champPrix.value);
+  const nom = document.querySelector("#nom").value;
+  const prix = document.querySelector("#prix").value;
 
-  if (nom === "" || prix <= 0 || !champPrix.checkValidity()) {
-    message.textContent = "Saisissez un nom et un prix valide.";
+  if (nom.trim() === "" || prix === "" || Number(prix) <= 0) {
+    document.querySelector("#message").textContent =
+      "Remplissez le nom et un prix supérieur à 0.";
     return;
   }
 
-  const nouveauProduit = {
+  const produit = {
     id: prochainId,
-    nom: nom,
-    prix: prix
+    nom: nom.trim(),
+    prix: Number(prix)
   };
 
-  produits.push(nouveauProduit);
-  prochainId++;
+  produits.push(produit);
+  prochainId = prochainId + 1;
 
   afficherProduits();
   formulaire.reset();
 
-  message.textContent = "Produit ajouté !";
-});
+  document.querySelector("#message").textContent = "Produit ajouté !";
+}
+
+formulaire.onsubmit = ajouterProduit;
 // 3. Gérer le retrait du produit cliqué.
 // 4. Bonus : compteur, état vide et total.
